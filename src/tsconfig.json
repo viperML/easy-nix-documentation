@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleResolution": "node",
+		"exactOptionalPropertyTypes": true,
+		"isolatedModules": true,
+		"resolveJsonModule": true,
+		"strictNullChecks": true,
+		"composite": true,
+		"types": ["node"],
+		"outDir": "dist"
+	}
+}

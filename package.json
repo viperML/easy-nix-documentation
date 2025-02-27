@@ -1,0 +1,13 @@
+{
+  "name": "easy-nix-documentation.root",
+  "private": true,
+  "workspaces": [
+    "src",
+    "example"
+  ],
+  "version": "1.0.0",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

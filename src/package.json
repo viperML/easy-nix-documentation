@@ -1,0 +1,22 @@
+{
+  "name": "easy-nix-documentation",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tsc"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@types/node": "^22.13.5",
+    "typescript": "^5.7.3",
+    "vitepress": "^1.6.3"
+  }
+}
