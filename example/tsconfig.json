@@ -1,4 +1,6 @@
 {
+  "compilerOptions": {
+  },
   "include": [
     "**/*.ts",
     "**/*.vue",

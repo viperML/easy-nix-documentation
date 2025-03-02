@@ -26,9 +26,11 @@ hero:
 Hello
 
 <script setup lang="ts">
-  import { data } from "./nixos.data.ts";
+import { data } from "./nixos.data.ts";
+
+import { RenderDocs } from "easy-nix-documentation";
 </script>
 
 <pre>
- {{ data }}
+ <RenderDocs :options="data" :include="[/boot\.plymouth\.*/]"/>
 </pre>
