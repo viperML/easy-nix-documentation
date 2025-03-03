@@ -16,7 +16,10 @@ const headingLevel = props.headingLevel || "h3";
 
     <div v-for="(option, name) of options">
 
-        <component :is="headingLevel" :id="name">{{ name }}</component>
+        <component :is="headingLevel" :id="name" tabindex="-1">
+            {{ name }}
+            <a class="header-anchor" :href="`#${name}`" :aria-label="`Permalink to &quot;${name}&quot;`">&ZeroWidthSpace;</a>
+        </component>
 
         <div v-html="option.description"></div>
 
