@@ -27,6 +27,12 @@ jobs:
       - name: Build page
         run: |
           eval "$(nix print-dev-env -f ./shell.nix)"
+
+          pushd src
+          npm install -D
+          npm run build
+          popd
+
           pushd example
           npm install -D
           npm run build
