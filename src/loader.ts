@@ -88,7 +88,5 @@ export async function loadOptions(installable: string, loaderConfig?: LoaderConf
         })
     )
 
-    console.log(res)
-
     return res;
 }
