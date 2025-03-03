@@ -18,28 +18,33 @@ const headingLevel = props.headingLevel || "h3";
 
         <component :is="headingLevel" :id="name">{{ name }}</component>
 
-        <h4>Description:</h4>
-        <p v-html="option.description"></p>
+        <div v-html="option.description"></div>
 
-        <div class="sbs">
-            <h4>Type</h4>
+        <div class="nixos-props">
+            <span>Type:</span>
             <code>{{ option.type }}</code>
-        </div>
 
-        <div class="sbs" v-if="option.default !== undefined">
-            <h4>Default</h4>
-            <div v-html="option.default.text"></div>
-        </div>
+            <template v-if="option.default !== undefined">
+                <span>Default:</span>
+                <div class="nixos-value" v-html="option.default.text"></div>
+            </template>
 
-        <div class="sbs" v-if="option.example !== undefined">
-            <h4>Example</h4>
-            <div v-html="option.example.text"></div>
+            <template v-if="option.example !== undefined">
+                <span>Example:</span>
+                <div class="nixos-value" v-html="option.example.text"></div>
+            </template>
         </div>
     </div>
 </template>
 
 <style scoped>
-p {
-    background-color: red;
+.nixos-props {
+    display: grid;
+    grid-template-columns: max-content auto;
+    gap: 2px 20px;
+}
+
+.nixos-value > * {
+    margin: 0 !important;
 }
 </style>
