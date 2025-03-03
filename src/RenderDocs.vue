@@ -22,7 +22,9 @@ const headingLevel = props.headingLevel || "h3";
 
         <div class="nixos-props">
             <span>Type:</span>
-            <code>{{ option.type }}</code>
+            <div>
+                <code>{{ option.type }}</code>
+            </div>
 
             <template v-if="option.default !== undefined">
                 <span>Default:</span>
@@ -37,14 +39,24 @@ const headingLevel = props.headingLevel || "h3";
     </div>
 </template>
 
-<style scoped>
+<style>
 .nixos-props {
     display: grid;
-    grid-template-columns: max-content auto;
+    grid-template-columns: max-content 1fr;
     gap: 2px 20px;
+}
+
+.nixos-value {
+    max-width: 100% !important;
+    overflow-x: auto;
 }
 
 .nixos-value > * {
     margin: 0 !important;
+    display: inline-block;
+}
+
+.nixos-value > code {
+    white-space: nowrap;
 }
 </style>
