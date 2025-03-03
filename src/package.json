@@ -11,7 +11,8 @@
   },
   "version": "1.0.0",
   "scripts": {
-    "build": "vite build"
+    "build": "vite build",
+    "watch": "vite build --watch"
   },
   "files": [
     "dist"

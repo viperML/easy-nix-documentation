@@ -4,40 +4,28 @@ import { createMarkdownRenderer, type SiteConfig } from 'vitepress';
 
 interface Props {
     options: OptionsDoc,
-    include?: RegExp[],
-    exclude?: RegExp[],
 }
 
 const props = defineProps<Props>();
-const config = globalThis.VITEPRESS_CONFIG as SiteConfig
-
-const md = await createMarkdownRenderer(config.srcDir, config.markdown, config.site.base, config.logger)
-
-const options = (() => {
-    if (props.include !== undefined) {
-        return Object.fromEntries(
-            Object.entries(props.options).filter(([name, value]) => {
-                // @ts-ignore
-                for (const rule of props.include) {
-                    const matches = rule.exec(name);
-                    if (matches !== null) {
-                        return true;
-                    }
-                }
-                return false;
-            })
-        )
-    } else {
-        return props.options;
-    }
-})();
 </script>
 
 <template>
     <div v-for="(option, name) of options">
         <h3>{{ name }}</h3>
-        <p>
-            {{ md.render(option.description) }}
-        </p>
+        <h4>Description:</h4>
+        <p v-html="option.description"></p>
+
+        <h4>Type</h4>
+        <code>{{ option.type }}</code>
+
+        <div v-if="option.default !== undefined">
+            <h4>Default</h4>
+            <div v-html="option.default.text"></div>
+        </div>
+
+        <div v-if="option.example !== undefined">
+            <h4>Example</h4>
+            <div v-html="option.example.text"></div>
+        </div>
     </div>
 </template>

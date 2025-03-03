@@ -31,6 +31,6 @@ import { data } from "./nixos.data.ts";
 import { RenderDocs } from "easy-nix-documentation";
 </script>
 
-<pre>
- <RenderDocs :options="data" :include="[/boot\.plymouth\.*/]"/>
-</pre>
+<div>
+ <RenderDocs :options="data" />
+</div>
