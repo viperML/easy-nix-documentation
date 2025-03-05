@@ -1,7 +1,7 @@
-import { loadOptions } from "easy-nix-documentation/loader"
-
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+
+import { loadOptions, stripNixStore } from "easy-nix-documentation/loader"
 
 
 export default {
@@ -10,7 +10,11 @@ export default {
         const __dirname = dirname(fileURLToPath(import.meta.url));
 
         return await loadOptions(`-f ${__dirname}/example.nix optionsJSON`, {
-            include: [/boot\.plymouth\.*/],
+            include: [/programs\.neovim\.*/],
+            mapDeclarations: declaration => {
+                const relDecl = stripNixStore(declaration);
+                return `<a href="http://github.com/NixOS/nixpkgs/tree/nixos-unstable/${relDecl}">&lt;${relDecl}&gt;</a>`
+            },
         })
     }
 }

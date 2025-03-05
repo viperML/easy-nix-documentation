@@ -16,6 +16,7 @@ const headingLevel = props.headingLevel || "h3";
 
     <div v-for="(option, name) of options">
 
+        <!-- This is how vitepress generates headings, might change in the future -->
         <component :is="headingLevel" :id="name" tabindex="-1">
             {{ name }}
             <a class="header-anchor" :href="`#${name}`" :aria-label="`Permalink to &quot;${name}&quot;`">&ZeroWidthSpace;</a>
@@ -38,6 +39,13 @@ const headingLevel = props.headingLevel || "h3";
                 <span>Example:</span>
                 <div class="nixos-value" v-html="option.example.text"></div>
             </template>
+
+            <template v-if="option.declarations.length >= 1">
+                <span>Declaration</span>
+                <template v-for="declaration of option.declarations">
+                    <div v-html="declaration"></div>
+                </template>
+            </template>
         </div>
     </div>
 </template>
@@ -59,7 +67,7 @@ const headingLevel = props.headingLevel || "h3";
     display: inline-block;
 }
 
-.nixos-value > code {
+.nixos-props code {
     white-space: nowrap;
 }
 </style>

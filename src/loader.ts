@@ -45,8 +45,14 @@ function renderValue(value: NixosValue, md: MarkdownRenderer): NixosValue {
 
 export type OptionsDoc = Record<string, NixosOption>;
 
+
 export interface LoaderConfig {
-    include?: RegExp[]
+    include?: RegExp[],
+    mapDeclarations?: (location: string) => string | undefined,
+}
+
+export function stripNixStore(storePath: string): string {
+    return storePath.replace(/^\/nix\/store\/[^/]+-[^/]+\//, "");
 }
 
 export async function loadOptions(installable: string, loaderConfig?: LoaderConfig): Promise<OptionsDoc> {
@@ -64,29 +70,24 @@ export async function loadOptions(installable: string, loaderConfig?: LoaderConf
     const obj: OptionsDoc = JSON.parse(data);
 
     const res = Object.fromEntries(
-        Object.entries(obj).filter(([name, value]) => {
-            if (loaderConfig?.include !== undefined) {
-                for (const include of loaderConfig.include) {
-                    const res = include.exec(name);
-                    if (Array.isArray(res) && res.length) {
-                        return true;
-                    }
+        Object.entries(obj)
+            .filter(([name]) => loaderConfig?.include?.some(include => include.test(name)) ?? true)
+            .map(([name, value]) => {
+                value.description = md.render(value.description);
+                if (value.default) value.default = renderValue(value.default, md);
+                if (value.example) value.example = renderValue(value.example, md);
+
+                if (loaderConfig?.mapDeclarations !== undefined) {
+                    value.declarations = value.declarations.map(loaderConfig.mapDeclarations).filter(x => x !== undefined);
+                } else {
+                    value.declarations = value.declarations.map(declaration => `<code>${declaration}</code>`)
                 }
-                return false;
-            } else {
-                return true;
-            }
-        }).map(([name, value]) => {
-            value.description = md.render(value.description);
-            if (value.default !== undefined) {
-                value.default = renderValue(value.default, md);
-            }
-            if (value.example !== undefined) {
-                value.example = renderValue(value.example, md)
-            }
-            return [name, value];
-        })
-    )
+
+                console.log(value.declarations);
+
+                return [name, value];
+            })
+    );
 
     return res;
 }
