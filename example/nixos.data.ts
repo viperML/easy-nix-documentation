@@ -1,12 +1,10 @@
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-
 import { loadOptions, stripNixStore } from "easy-nix-documentation/loader"
 
 
 export default {
     async load() {
-        // @ts-ignore
         const __dirname = dirname(fileURLToPath(import.meta.url));
 
         return await loadOptions(`-f ${__dirname}/example.nix optionsJSON`, {

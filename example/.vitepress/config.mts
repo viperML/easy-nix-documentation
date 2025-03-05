@@ -1,27 +1,26 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
-  title: "Easy Nix Documentation",
-  description: "A VitePress Site",
+  title: "easy-nix-documentation",
+  description: "Documentation generator for your Nix projects",
   base: "/easy-nix-documentation/",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
-    nav: [
-      { text: 'Home', link: '/' },
-      // { text: 'Examples', link: '/markdown-examples' }
-    ],
-
-    // sidebar: [
-    //   {
-    //     // text: 'Examples',
-    //     items: [
-    //       { text: 'Options', link: '/options' }
-    //     ]
-    //   }
+    // nav: [
+    //   { text: 'Home', link: '/' },
     // ],
 
+    sidebar: [
+      {
+        items: [
+          { text: "Usage", link: "/usage", },
+          { text: 'Example', link: '/example' }
+        ]
+      }
+    ],
+
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
+      { icon: 'github', link: 'https://github.com/viperML/easy-nix-documentation' }
     ],
 
     outline: {

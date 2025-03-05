@@ -3,24 +3,28 @@
 layout: home
 
 hero:
-  name: Activation-Manager
-  text: Post-modern configuration managemenent
+  name: easy-nix-documentation
+  text: Documentation generator for your Nix projects
   # tagline: Documentation
   actions:
     - theme: brand
-      text: Options
-      link: /options
+      text: Usage
+      link: /usage
+    - theme: alt
+      text: Example
+      link: /example
     - theme: alt
       text: GitHub
       link: https://github.com/viperML/activation-manager
 
-# features:
-#   - title: Feature A
-#     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-#   - title: Feature B
-#     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-#   - title: Feature C
-#     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+features:
+  - title: Easy to use
+    details: Document your Nix project with as little boilerplate as possible.
+    icon: 🚀
+  - title: Batteries-included
+    details: All you need to generate a beautiful page with just VitePress and this library.
+    icon: 🔋
+  - title: Composable
+    details: Easy-Nix-Documentation integrates into a VitePress project as another component.
+    icon: 🧩
 ---
-
-Hello

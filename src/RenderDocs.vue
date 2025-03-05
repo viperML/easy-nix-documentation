@@ -12,8 +12,6 @@ const headingLevel = props.headingLevel || "h3";
 </script>
 
 <template>
-    <p class="check">Hello world</p>
-
     <div v-for="(option, name) of options">
 
         <!-- This is how vitepress generates headings, might change in the future -->
