@@ -15,7 +15,7 @@ hero:
       link: /example
     - theme: alt
       text: GitHub
-      link: https://github.com/viperML/activation-manager
+      link: https://github.com/viperML/easy-nix-documentation
 
 features:
   - title: Easy to use
