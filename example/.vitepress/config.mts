@@ -14,6 +14,7 @@ export default defineConfig({
       {
         items: [
           { text: "Usage", link: "/usage", },
+          // { text: 'Cookbook', link: '/cookbook' },
           { text: 'Example', link: '/example' }
         ]
       }

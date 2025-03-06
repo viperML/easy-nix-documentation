@@ -4,15 +4,16 @@ title: Usage
 
 # {{ $frontmatter.title }}
 
-Easy-Nix-Documentation is a nodejs library that uses Vue to generate a pretty display of your NixOS options to be displayed with [VitePress](https://vitepress.dev/).
 
+Easy-Nix-Documentation is a NodeJS library that adapts a Nix/NixOS module into a [VitePress](https://vitepress.dev/) site.
+Create a VitePress site, point easy-nix-documentation to your modules, and publish your site with GitHub pages!
 The goals of this library are:
 
-- Making it as simple as possible for library authors to document their Nix proejcts.
+- Making it as simple as possible for library authors to document their Nix projects.
 - Come batteries-included, without much setup from the user.
 - Provide abstractions that compose with existing solutions, like VitePress.
 
-If you are already convinved, that's great, let's get you started.
+If you are already convinced, that's great, let's get you started.
 
 ## Adapting your module with `pkgs.optionsDoc`
 
@@ -75,13 +76,19 @@ The data loader will take an **installable** for Nix to build the `optionsJSON` 
 So, for the previous examples, we would use `nix build -f ./file.nix optionsJSON`, that's the installable you have to pass
 to the loader.
 
+```console
+$ nix build -f ./file.nix optionsJSON
+$ file result/share/doc/nixos/options.json
+result/share/doc/nixos/options.json: ASCII text, with very long lines (65536), with no line terminators
+```
+
 ::: tip
 Read the cookbook for more examples, like documenting a NixOS module from a Nix flake.
 :::
 
 ## First setup
 
-1. Get Node and NPM (or NPPM, Yarn, etc), you can start by adding them to your existing nix shell:
+1. Get Node and NPM (or NPPM, Yarn, etc.), you can start by adding them to your existing nix shell:
    ```nix
    with import <nixpkgs>;
    mkShell {
@@ -98,11 +105,23 @@ Read the cookbook for more examples, like documenting a NixOS module from a Nix 
    ```
 
 3. Init your vitepress project.
-   ```console
+   ```bash
    $ npx vitepress init
+   $ eza --tree --all --git-ignore
+   .
+   ├── .gitignore
+   ├── .vitepress
+   │   └── config.mts
+   ├── api-examples.md
+   ├── index.md
+   ├── markdown-examples.md
+   ├── package-lock.json
+   └── package.json
    ```
 
-4. Create a [data loader](https://vitepress.dev/guide/data-loading). The loader will be called by vitepress at startup, and will cache its result when modifying the markdown pages. In loader, we call the loader function from this library, which calls `nix build` under the hood, and parses the documentation. **You need to pass in an installable which builds the optionsJSON attribute from the nixosOptionsDoc output**.
+4. Create a [data loader](https://vitepress.dev/guide/data-loading). This is a separate script that loads the module information once when VitePress starts.
+
+   As the parameter, pass the installable that builds the output of `pkgs.nixosOptionsDoc`, as we saw earlier.
    ```ts
    // myoptions.data.ts
    import { dirname } from 'node:path'
@@ -115,16 +134,31 @@ Read the cookbook for more examples, like documenting a NixOS module from a Nix 
        }
    }
    ```
+   ```bash
+   $ npx vitepress init
+   $ eza --tree --all --git-ignore
+   .
+   ├── .gitignore
+   ├── .vitepress
+   │   └── config.mts
+   ├── api-examples.md
+   ├── example.nix  # [!code ++]
+   ├── index.md
+   ├── markdown-examples.md
+   ├── myoptions.data.ts  # [!code ++]
+   ├── package-lock.json
+   └── package.json
+   ```
 
-5. Load the data into the Vue component that this library provides
+5. In any of the Markdown files, call the loader and pass it to the component to render it.
    ```vue
-   <!-- index.md -->
    ---
    title: My Documentation
    ---
+   <!-- docs.md -->
 
    <script setup>
-   import { data } from "./nixos.data.js";
+   import { data } from "./myoptions.data.js";
    import { RenderDocs } from "easy-nix-documentation";
    </script>
 
@@ -133,7 +167,7 @@ Read the cookbook for more examples, like documenting a NixOS module from a Nix 
    <RenderDocs :options="data" />
    ```
 
-6. Optionally, you can tweak the loader options. For example, filter the options with some regex rule, and map the declarations to a GitHub page:
+6. _Optionally_, filter the options to load, and map the declarations:
 
    ```ts
    import { dirname } from 'node:path'
@@ -154,8 +188,4 @@ Read the cookbook for more examples, like documenting a NixOS module from a Nix 
    }
    ```
 
-## Cookbook
-
-These are some configurations of the library that diverge from a bare-bones setup.
-
-_TODO_
+If you feel like this documentation could be improved, don't hesitate to [open an issue](https://github.com/viperML/easy-nix-documentation/issues).

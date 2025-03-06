@@ -4,12 +4,15 @@ layout: home
 
 hero:
   name: easy-nix-documentation
-  text: Documentation generator for your Nix projects
-  # tagline: Documentation
+  text: VitePress Powered Nix Module Documentation Generator
+  tagline: Nix and Markdown to Beautiful in Minutes
   actions:
     - theme: brand
       text: Usage
       link: /usage
+    # - theme: alt
+    #   text: Cookbook
+    #   link: /cookbook
     - theme: alt
       text: Example
       link: /example
@@ -28,3 +31,6 @@ features:
     details: Easy-Nix-Documentation integrates into a VitePress project as another component.
     icon: 🧩
 ---
+
+Easy-Nix-Documentation is a NodeJS library that adapts a Nix/NixOS module into a [VitePress](https://vitepress.dev/) site.
+Create a VitePress site, point easy-nix-documentation to your modules, and publish your site with GitHub pages!
