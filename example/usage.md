@@ -173,7 +173,7 @@ Read the cookbook for more examples, like documenting a NixOS module from a Nix 
    ```ts
    import { dirname } from 'node:path'
    import { fileURLToPath } from 'node:url'
-   import { loadOptions, stripNixStore } from "easy-nix-documentation/loader"
+   import { loadOptions, stripNixStore } from "easy-nix-documentation/loader" // [!code ++]
    export default {
        async load() {
            const __dirname = dirname(fileURLToPath(import.meta.url));
