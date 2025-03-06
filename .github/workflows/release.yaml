@@ -33,7 +33,7 @@ jobs:
           EOF
           ls -la
           tail -n1 .npmrc
-        with:
+        env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: 🏗️ Build package
@@ -47,5 +47,5 @@ jobs:
 
       - name: 📦 Publish package
         run: npm publish
-        with:
+        env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
