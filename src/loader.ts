@@ -74,6 +74,11 @@ export async function loadOptions(installable: string, loaderConfig?: LoaderConf
             .filter(([name]) => loaderConfig?.include?.some(include => include.test(name)) ?? true)
             .map(([name, value]) => {
                 value.description = md.render(value.description);
+
+                // Simply drop these
+                value.description = value.description.replace("{file}", "");
+                value.description = value.description.replace("{command}", "");
+
                 if (value.default) value.default = renderValue(value.default, md);
                 if (value.example) value.example = renderValue(value.example, md);
 
@@ -82,8 +87,6 @@ export async function loadOptions(installable: string, loaderConfig?: LoaderConf
                 } else {
                     value.declarations = value.declarations.map(declaration => `<code>${declaration}</code>`)
                 }
-
-                console.log(value.declarations);
 
                 return [name, value];
             })

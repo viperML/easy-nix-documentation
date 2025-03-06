@@ -12,38 +12,40 @@ const headingLevel = props.headingLevel || "h3";
 </script>
 
 <template>
-    <div v-for="(option, name) of options">
+    <div class="nixos-container">
+        <div v-for="(option, name) of options">
 
-        <!-- This is how vitepress generates headings, might change in the future -->
-        <component :is="headingLevel" :id="name" tabindex="-1">
-            {{ name }}
-            <a class="header-anchor" :href="`#${name}`" :aria-label="`Permalink to &quot;${name}&quot;`">&ZeroWidthSpace;</a>
-        </component>
+            <!-- This is how vitepress generates headings, might change in the future -->
+            <component :is="headingLevel" :id="name" tabindex="-1">
+                {{ name }}
+                <a class="header-anchor" :href="`#${name}`" :aria-label="`Permalink to &quot;${name}&quot;`">&ZeroWidthSpace;</a>
+            </component>
 
-        <div v-html="option.description"></div>
+            <div v-html="option.description"></div>
 
-        <div class="nixos-props">
-            <span>Type:</span>
-            <div>
-                <code>{{ option.type }}</code>
-            </div>
+            <div class="nixos-props">
+                <span>Type:</span>
+                <div class="nixos-value">
+                    <code>{{ option.type }}</code>
+                </div>
 
-            <template v-if="option.default !== undefined">
-                <span>Default:</span>
-                <div class="nixos-value" v-html="option.default.text"></div>
-            </template>
-
-            <template v-if="option.example !== undefined">
-                <span>Example:</span>
-                <div class="nixos-value" v-html="option.example.text"></div>
-            </template>
-
-            <template v-if="option.declarations.length >= 1">
-                <span>Declaration</span>
-                <template v-for="declaration of option.declarations">
-                    <div v-html="declaration"></div>
+                <template v-if="option.default !== undefined">
+                    <span>Default:</span>
+                    <div class="nixos-value" v-html="option.default.text"></div>
                 </template>
-            </template>
+
+                <template v-if="option.example !== undefined">
+                    <span>Example:</span>
+                    <div class="nixos-value" v-html="option.example.text"></div>
+                </template>
+
+                <template v-if="option.declarations.length >= 1">
+                    <span>Declaration</span>
+                    <template v-for="declaration of option.declarations">
+                        <div class="nixos-declaration" v-html="declaration"></div>
+                    </template>
+                </template>
+            </div>
         </div>
     </div>
 </template>
@@ -67,5 +69,19 @@ const headingLevel = props.headingLevel || "h3";
 
 .nixos-props code {
     white-space: nowrap;
+}
+
+.nixos-props span {
+    font-weight: 600;
+}
+
+.nixos-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.nixos-declaration {
+    word-break: break-all;
 }
 </style>
