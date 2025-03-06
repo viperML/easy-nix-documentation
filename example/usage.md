@@ -101,6 +101,7 @@ Read the cookbook for more examples, like documenting a NixOS module from a Nix 
 2. Init a new project, and add `vitepress`, `vue` and `easy-nix-documentation` as your dependencies.
    ```console
    $ npm init
+   $ npm pkg set type="module" # IMPORTANT
    $ npm add -D vitepress vue easy-nix-documentation
    ```
 
