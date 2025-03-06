@@ -1,0 +1,50 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+
+    steps:
+      - name: 🛠️ Checkout
+        uses: actions/checkout@v4
+
+      - name: 📦 Install Nix
+        uses: cachix/install-nix-action@master
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          extra_nix_config: |
+            extra-experimental-features = nix-command flakes pipe-operators
+
+      - name: 📝 Setup npmrc
+        run: |
+          tee .npmrc <<EOF
+          //registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}
+          registry=https://registry.npmjs.org/
+          always-auth=true
+          EOF
+          ls -la
+          tail -n1 .npmrc
+        with:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: 🏗️ Build package
+        run: |
+          eval "$(nix print-dev-env -f ./shell.nix)"
+
+          cd src
+          npm install -D
+          npm run build
+
+
+      - name: 📦 Publish package
+        run: npm publish
+        with:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
