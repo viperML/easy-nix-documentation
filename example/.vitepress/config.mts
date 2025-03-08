@@ -27,5 +27,10 @@ export default defineConfig({
     outline: {
       level: "deep",
     }
+  },
+  vite: {
+    ssr: {
+      noExternal: 'easy-nix-documentation',
+    }
   }
 })
