@@ -47,6 +47,6 @@ jobs:
         run: |
           eval "$(nix print-dev-env)"
           cd src
-          pnpm publish
+          pnpm publish --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
