@@ -68,6 +68,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         name: 🛠️ Checkout
+        with:
+          ssh-key: "${{ secrets.DEPLOY_KEY }}"
 
       - run: |
           echo -n "version=v" >> $GITHUB_ENV
