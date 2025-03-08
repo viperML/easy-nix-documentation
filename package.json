@@ -1,8 +1,0 @@
-{
-  "name": "easy-nix-documentation.root",
-  "private": true,
-  "workspaces": [
-    "src",
-    "example"
-  ]
-}
