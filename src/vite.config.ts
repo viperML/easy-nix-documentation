@@ -40,11 +40,13 @@ export default defineConfig({
         // Put chunk styles at <output>/assets
         assetFileNames: 'assets/[name][extname]',
         entryFileNames: '[name].js',
+        preserveModules: false,
       }
     },
     sourcemap: true,
     minify: false,
     cssMinify: false,
+    cssCodeSplit: true,
   },
   optimizeDeps: {
     exclude: ["node"]
