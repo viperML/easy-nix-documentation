@@ -34,7 +34,7 @@ function renderValue(value: NixosValue, md: MarkdownRenderer): NixosValue {
     } else if (value._type == "literalExpression") {
         return {
             _type: "literalExpression",
-            text: `<code>${value.text}</code>`
+            text: `<code><pre>${value.text}</pre></code>`
         }
     } else {
         console.log("Unknown Value")

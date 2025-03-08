@@ -84,4 +84,8 @@ const headingLevel = props.headingLevel || "h3";
 .nixos-declaration {
     word-break: break-all;
 }
+
+.nixos-container pre {
+    margin: 0;
+}
 </style>

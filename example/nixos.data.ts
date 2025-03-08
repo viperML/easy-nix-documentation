@@ -8,7 +8,10 @@ export default {
         const __dirname = dirname(fileURLToPath(import.meta.url));
 
         return await loadOptions(`-f ${__dirname}/example.nix optionsJSON`, {
-            include: [/programs\.neovim\.*/],
+            include: [
+                /programs\.neovim\.*/,
+                /services\.rsnapshot\.*/
+            ],
             mapDeclarations: declaration => {
                 const relDecl = stripNixStore(declaration);
                 return `<a href="http://github.com/NixOS/nixpkgs/tree/nixos-unstable/${relDecl}">&lt;${relDecl}&gt;</a>`
