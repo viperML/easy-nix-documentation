@@ -11,48 +11,62 @@
     in
     {
       packages.${system} = {
-        lib =
+        default =
           with pkgs;
-          buildNpmPackage {
-            name = "easy-nix-documentation";
-            src = ./.;
-            npmDeps = importNpmLock {
-              npmRoot = ./.;
-              package = builtins.readFile ./src/package.json |> builtins.fromJSON;
-              packageLock = builtins.readFile ./package-lock.json |> builtins.fromJSON;
-            };
-            npmWorkspace = "src";
-            npmConfigHook = importNpmLock.npmConfigHook;
-            dontFixup = true;
-          };
+          stdenv.mkDerivation (final: {
+            name = "example";
 
-          example = with pkgs; buildNpmPackage {
-            name = "test";
             src = ./.;
-            npmDeps = importNpmLock {
-              npmRoot = ./.;
-              package = builtins.readFile ./example/package.json |> builtins.fromJSON;
-              packageLock = builtins.readFile ./package-lock.json |> builtins.fromJSON;
-            };
-            npmWorkspace = "example";
-            npmConfigHook = importNpmLock.npmConfigHook;
-            dontFixup = true;
             nativeBuildInputs = [
-              strace
+              nodejs
+              pnpm.configHook
             ];
+            pnpmDeps = pnpm.fetchDeps {
+              pname = "example";
+              inherit (final) src;
+              hash = "sha256-Q8oVbsrAYJUuD4LhNGKvyvcQih/Vyh1qrmktQ3NL5cI";
+            };
+            env.OPTIONS_JSON = self.packages.${system}.exampleOptionsJSON;
             buildPhase = ''
               pushd src
-              npm run build
+              pnpm build
+              popd
+
+              pushd example
+              exit_st=0
+              pnpm build > build.log 2>&1 || {
+                exit_st=$?
+                :
+              }
+              cat build.log
+              popd
+              return $exit_st
             '';
-          };
+            installPhase = ''
+              pwd
+              ls -la
+              mv example/.vitepress/dist $out
+            '';
+          });
+
+        exampleOptionsJSON =
+          (pkgs.nixosOptionsDoc {
+            options =
+              (nixpkgs.lib.nixosSystem {
+                inherit system;
+                modules = [ ];
+              }).options;
+          }).optionsJSON;
       };
 
       devShells.${system}.default =
         with pkgs;
         mkShell {
           packages = [
-            nodejs
+            (nodejs.override { enableNpm = false; })
+            pnpm
           ];
+          env.OPTIONS_JSON = self.packages.${system}.exampleOptionsJSON;
         };
     };
 }

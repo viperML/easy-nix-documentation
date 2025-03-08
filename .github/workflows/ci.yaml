@@ -33,23 +33,14 @@ jobs:
 
       - name: 🏗️ Build page
         run: |
-          eval "$(nix print-dev-env -f ./shell.nix)"
-
-          pushd src
-          npm install -D
-          npm run build
-          popd
-
-          pushd example
-          npm install -D
-          npm run build
-          popd
+          loc=$(nix build -L --no-link --print-out-paths)
+          cp -vrL $loc ./result
 
       - name: 📤 Upload artifacts
         id: deployment
         uses: actions/upload-pages-artifact@v3
         with:
-          path: example/.vitepress/dist
+          path: ./result
 
   deploy:
     environment:

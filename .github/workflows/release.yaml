@@ -37,16 +37,16 @@ jobs:
 
       - name: 🏗️ Build package
         run: |
-          eval "$(nix print-dev-env -f ./shell.nix)"
+          eval "$(nix print-dev-env)"
           cd src
-          npm install -D
-          npm run build
+          pnpm install
+          pnpm build
 
 
       - name: 📦 Publish package
         run: |
-          eval "$(nix print-dev-env -f ./shell.nix)"
+          eval "$(nix print-dev-env)"
           cd src
-          npm publish
+          pnpm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

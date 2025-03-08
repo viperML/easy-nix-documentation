@@ -1,13 +1,16 @@
-import { dirname } from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { loadOptions, stripNixStore } from "easy-nix-documentation/loader"
+import { exit } from 'node:process';
 
 
 export default {
     async load() {
-        const __dirname = dirname(fileURLToPath(import.meta.url));
+        const optionsJSON = process.env.OPTIONS_JSON;
+        if (optionsJSON === undefined) {
+            console.warn("OPTIONS_JSON undefined");
+            exit(1);
+        }
 
-        return await loadOptions(`-f ${__dirname}/example.nix optionsJSON`, {
+        return await loadOptions(optionsJSON, {
             include: [
                 /programs\.neovim\.*/,
                 /services\.rsnapshot\.*/
