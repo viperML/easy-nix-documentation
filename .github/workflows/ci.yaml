@@ -5,6 +5,7 @@ concurrency: ci
 permissions:
   id-token: write
   pages: write
+  contents: write
 
 on:
   workflow_dispatch:
