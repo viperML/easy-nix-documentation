@@ -60,15 +60,17 @@ export async function loadOptions(installable: string, loaderConfig?: LoaderConf
     const md = await createMarkdownRenderer(config.srcDir, config.markdown, config.site.base, config.logger)
 
     const exec = promisify(exec_cb);
-    const file = await (async () => {
+    const storePath = await (async () => {
         // User passes just a pre-built derivation
         if (installable.startsWith("/nix/store")) {
             return installable;
         } else {
             const { stdout } = await exec(`nix build ${installable} --no-link --print-out-paths`);
-            return `${stdout.trim()}/share/doc/nixos/options.json`;
+            return stdout.trim();
         }
     })();
+
+    const file = `${storePath}/share/doc/nixos/options.json`
 
     const data = await readFile(file, { encoding: "utf-8" });
 
