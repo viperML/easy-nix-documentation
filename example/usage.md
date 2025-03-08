@@ -88,7 +88,7 @@ Read the cookbook for more examples, like documenting a NixOS module from a Nix 
 
 ## First setup
 
-1. Get Node and NPM (or NPPM, Yarn, etc.), you can start by adding them to your existing nix shell:
+1. Get Node and NPM (or PNPM, Yarn, etc.), you can start by adding them to your existing nix shell:
    ```nix
    with import <nixpkgs>;
    mkShell {
@@ -98,15 +98,11 @@ Read the cookbook for more examples, like documenting a NixOS module from a Nix 
    }
    ```
 
-2. Init a new project, and add `vitepress`, `vue` and `easy-nix-documentation` as your dependencies.
+2. Init a new VuePress project:
    ```console
    $ npm init
    $ npm pkg set type="module" # IMPORTANT
-   $ npm add -D vitepress vue easy-nix-documentation
-   ```
-
-3. Init your vitepress project.
-   ```bash
+   $ npm add -D vitepress
    $ npx vitepress init
    $ eza --tree --all --git-ignore
    .
@@ -120,7 +116,25 @@ Read the cookbook for more examples, like documenting a NixOS module from a Nix 
    └── package.json
    ```
 
-4. Create a [data loader](https://vitepress.dev/guide/data-loading). This is a separate script that loads the module information once when VitePress starts.
+3. Add `easy-nix-documentation` to the project, and configure Vite properly:
+   ```
+   $ npm add -D easy-nix-documentation
+   ```
+
+   ```ts
+   // .vitepress/config.mts
+   import { defineConfig } from 'vitepress'
+   export default defineConfig({
+     // ...
+     vite: { // [!code ++]
+       ssr: { // [!code ++]
+         noExternal: 'easy-nix-documentation', // [!code ++]
+       } // [!code ++]
+     } // [!code ++]
+   })
+   ```
+
+5. Create a [data loader](https://vitepress.dev/guide/data-loading). This is a separate script that loads the module information once when VitePress starts.
 
    As the parameter, pass the installable that builds the output of `pkgs.nixosOptionsDoc`, as we saw earlier.
    ```ts
@@ -131,10 +145,26 @@ Read the cookbook for more examples, like documenting a NixOS module from a Nix 
    export default {
        async load() {
            const __dirname = dirname(fileURLToPath(import.meta.url));
-           return await loadOptions(`-f ${__dirname}/example.nix optionsJSON`)
+           return await loadOptions(`-f ${__dirname}/example.nix`)
        }
    }
    ```
+
+   ```nix
+   # build_docs.nix
+   let
+     pkgs = import <nixpkgs> {};
+     nixos = import <nixpkgs/nixos> {
+       configuration.imports = [
+         ./mymodule.nix
+       ];
+     };
+   in
+     (pkgs.nixosOptionsDoc {
+       inherit (nixos) options;
+     }).optionsJSON
+   ```
+
    ```bash
    $ npx vitepress init
    $ eza --tree --all --git-ignore
@@ -143,15 +173,16 @@ Read the cookbook for more examples, like documenting a NixOS module from a Nix 
    ├── .vitepress
    │   └── config.mts
    ├── api-examples.md
-   ├── example.nix  # [!code ++]
+   ├── build_docs.nix  # [!code ++]
    ├── index.md
    ├── markdown-examples.md
+   ├── mymodule.nix  # [!code ++]
    ├── myoptions.data.ts  # [!code ++]
    ├── package-lock.json
    └── package.json
    ```
 
-5. In any of the Markdown files, call the loader and pass it to the component to render it.
+1. In any of the Markdown files, call the loader and pass it to the component to render it.
    ```vue
    ---
    title: My Documentation
@@ -168,7 +199,7 @@ Read the cookbook for more examples, like documenting a NixOS module from a Nix 
    <RenderDocs :options="data" />
    ```
 
-6. _Optionally_, filter the options to load, and map the declarations:
+2. _Optionally_, filter the options to load, and map the declarations:
 
    ```ts
    import { dirname } from 'node:path'
