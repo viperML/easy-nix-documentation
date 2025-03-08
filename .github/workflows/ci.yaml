@@ -1,5 +1,7 @@
 name: ci
 
+concurrency: ci
+
 permissions:
   id-token: write
   pages: write
@@ -58,3 +60,21 @@ jobs:
       - name: 🚀 Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: 🛠️ Checkout
+
+      - run: |
+          echo -n "version=v" >> $GITHUB_ENV
+          jq -r '.version' src/package.json >> "$GITHUB_ENV"
+        name: 📚 Read version
+
+      - name: 🏷️ Tag
+        run: |
+          set -x
+          git tag $version
+          git push --tags || :
