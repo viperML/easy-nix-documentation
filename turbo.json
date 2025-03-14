@@ -1,0 +1,13 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalEnv": ["OPTIONS_JSON"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": false
+    }
+  }
+}

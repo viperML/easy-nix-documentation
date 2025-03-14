@@ -22,25 +22,13 @@
               pnpm.configHook
             ];
             pnpmDeps = pnpm.fetchDeps {
-              pname = "example";
+              pname = final.name;
               inherit (final) src;
-              hash = "sha256-Q8oVbsrAYJUuD4LhNGKvyvcQih/Vyh1qrmktQ3NL5cI";
+              hash = "sha256-/isnCYYI0SzG+OaacGczM7HwJhVebsbk9vdTg1MBACI=";
             };
             env.OPTIONS_JSON = self.packages.${system}.exampleOptionsJSON;
             buildPhase = ''
-              pushd src
               pnpm build
-              popd
-
-              pushd example
-              exit_st=0
-              pnpm build > build.log 2>&1 || {
-                exit_st=$?
-                :
-              }
-              cat build.log
-              popd
-              return $exit_st
             '';
             installPhase = ''
               pwd
