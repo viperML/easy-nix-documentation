@@ -24,7 +24,7 @@
             pnpmDeps = pnpm.fetchDeps {
               pname = final.name;
               inherit (final) src;
-              hash = "sha256-/isnCYYI0SzG+OaacGczM7HwJhVebsbk9vdTg1MBACI=";
+              hash = "sha256-02HxFkAQPGGC/z0MCg2qn18unq6Vk0y2/49Xug1cLF4=";
             };
             env.OPTIONS_JSON = self.packages.${system}.exampleOptionsJSON;
             buildPhase = ''
