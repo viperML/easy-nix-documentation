@@ -1,19 +1,39 @@
 <script setup lang="ts">
-import { OptionsDoc } from './loader';
-import { createMarkdownRenderer, type SiteConfig } from 'vitepress';
+import { type OptionsDoc } from './loader';
 
 interface Props {
     options: OptionsDoc,
-    headingLevel?: "h2" | "h3" | "h4"
+    headingLevel?: "h2" | "h3" | "h4" | undefined,
+    include?: RegExp | RegExp[] | undefined,
+    exclude?: RegExp | RegExp[] | undefined,
 }
 
 const props = defineProps<Props>();
 const headingLevel = props.headingLevel || "h3";
+
+const optionsFiltered: OptionsDoc = Object.fromEntries( Object.entries(props.options).filter(([name, _]) => {
+    if (props.exclude !== undefined) {
+        if (Array.isArray(props.exclude)) {
+            return !props.exclude.some((exclude) => exclude.test(name));
+        } else {
+            return !props.exclude.test(name);
+        }
+    }
+    if (props.include === undefined) {
+        return true;
+    } else {
+        if (Array.isArray(props.include)) {
+            return props.include.some((include) => include.test(name));
+        } else {
+            return props.include.test(name);
+        }
+    }
+}));
 </script>
 
 <template>
     <div class="nixos-container">
-        <div v-for="(option, name) of options">
+        <div v-for="(option, name) of optionsFiltered">
 
             <!-- This is how vitepress generates headings, might change in the future -->
             <component :is="headingLevel" :id="name" tabindex="-1">
@@ -29,12 +49,12 @@ const headingLevel = props.headingLevel || "h3";
                     <code>{{ option.type }}</code>
                 </div>
 
-                <template v-if="option.default !== undefined">
+                <template v-if="option.default">
                     <span>Default:</span>
                     <div class="nixos-value" v-html="option.default.text"></div>
                 </template>
 
-                <template v-if="option.example !== undefined">
+                <template v-if="option.example">
                     <span>Example:</span>
                     <div class="nixos-value" v-html="option.example.text"></div>
                 </template>

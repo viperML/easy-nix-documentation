@@ -66,10 +66,16 @@ pkgs.nixosOptionsDoc {
 ---
 
 <script setup lang="ts">
+// @ts-ignore
 import { data } from "./nixos.data.js";
 import { RenderDocs } from "easy-nix-documentation";
 </script>
 
-## Options
+## Neovim Options
 
-<RenderDocs :options="data" />
+<RenderDocs :options="data" :include="/programs\.neovim\.*/" />
+
+## Rsnapshot Options
+
+<RenderDocs :options="data" :include="/services\.rsnapshot\.*/" />
+
