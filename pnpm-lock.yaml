@@ -29,6 +29,9 @@ importers:
       '@types/node':
         specifier: ^22.13.5
         version: 22.13.10
+      html-entities:
+        specifier: ^2.6.0
+        version: 2.6.0
       vitepress:
         specifier: ^1.6.3
         version: 1.6.3(@algolia/client-search@5.20.4)(@types/node@22.13.10)(postcss@8.5.3)(search-insights@2.17.3)(typescript@5.8.2)
@@ -1001,6 +1004,9 @@ packages:
 
   hookable@5.5.3:
     resolution: {integrity: sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==}
+
+  html-entities@2.6.0:
+    resolution: {integrity: sha512-kig+rMn/QOVRvr7c86gQ8lWXq+Hkv6CbAH1hLu+RG338StTpE8Z0b44SDVaqVu7HGKf27frdmUYEs9hTUX/cLQ==}
 
   html-void-elements@3.0.0:
     resolution: {integrity: sha512-bEqo66MRXsUGxWHV5IP0PUiAWwoEjba4VCzg0LjFJBpchPaTfyfCKTG6bc5F8ucKec3q5y6qOdGyYTSBEvhCrg==}
@@ -2312,6 +2318,8 @@ snapshots:
   he@1.2.0: {}
 
   hookable@5.5.3: {}
+
+  html-entities@2.6.0: {}
 
   html-void-elements@3.0.0: {}
 

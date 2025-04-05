@@ -3,6 +3,8 @@ import { promisify } from "node:util";
 import { readFile } from "node:fs/promises";
 import { createMarkdownRenderer, MarkdownRenderer, type SiteConfig } from "vitepress";
 
+import {encode} from 'html-entities';
+
 export interface NixosOption {
     description: string,
     declarations: string[],
@@ -32,9 +34,10 @@ function renderValue(value: NixosValue, md: MarkdownRenderer): NixosValue {
             text: md.render(value.text)
         }
     } else if (value._type == "literalExpression") {
+        const encoded = encode(value.text);
         return {
             _type: "literalExpression",
-            text: `<code><pre>${value.text}</pre></code>`
+            text: `<code><pre>${encoded}</pre></code>`
         }
     } else {
         console.log("Unknown Value")

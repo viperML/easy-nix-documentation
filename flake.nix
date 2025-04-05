@@ -42,7 +42,9 @@
             options =
               (nixpkgs.lib.nixosSystem {
                 inherit system;
-                modules = [ ];
+                modules = [
+                  ./test-module.nix
+                ];
               }).options;
           }).optionsJSON;
       };

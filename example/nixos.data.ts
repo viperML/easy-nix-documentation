@@ -13,7 +13,9 @@ export default {
         return await loadOptions(optionsJSON, {
             include: [
                 /programs\.neovim\.*/,
-                /services\.rsnapshot\.*/
+                /services\.rsnapshot\.*/,
+                /services\.xserver\.windowManager\.xmonad\.*/,
+                /test\.*/,
             ],
             mapDeclarations: declaration => {
                 const relDecl = stripNixStore(declaration);

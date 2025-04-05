@@ -79,3 +79,10 @@ import { RenderDocs } from "easy-nix-documentation";
 
 <RenderDocs :options="data" :include="/services\.rsnapshot\.*/" />
 
+## Xmonad Options
+
+<RenderDocs :options="data" :include="/services\.xserver\.windowManager\.xmonad\.*/" />
+
+## Test Options
+
+<RenderDocs :options="data" :include="/^test\.*/" />
