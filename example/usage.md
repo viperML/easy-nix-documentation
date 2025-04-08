@@ -15,12 +15,12 @@ The goals of this library are:
 
 If you are already convinced, that's great, let's get you started.
 
-## Adapting your module with `pkgs.optionsDoc`
+## Adapting your module with `pkgs.nixosOptionsDoc`
 
-Nixpkgs provides this function called `pkgs.optionsDoc`:
+Nixpkgs provides this function called `pkgs.nixosOptionsDoc`:
 
 ```
-pkgs.optionsDoc {
+pkgs.nixosOptionsDoc {
   options = ...;
 }
 
@@ -49,7 +49,7 @@ let
     # ...
   };
 in
-  pkgs.optionsDoc {
+  pkgs.nixosOptionsDoc {
     inherit (mySystem) options;
   }
 ```
@@ -57,7 +57,7 @@ in
 Similarly, if you are writing a module for NixOS, you must evaluate the module system with your module on top:
 
 ```nix
-# Calling optionsDoc for documenting a NixOS module
+# Calling nixosOptionsDoc for documenting a NixOS module
 let
   pkgs = import <nixpkgs> {};
 
@@ -67,12 +67,12 @@ let
     ];
   };
 in
-  pkgs.optionsDoc {
+  pkgs.nixosOptionsDoc {
     inherit (myNixos) options;
   }
 ```
 
-The data loader will take an **installable** for Nix to build the `optionsJSON` attribute of the `optionsDoc` function.
+The data loader will take an **installable** for Nix to build the `optionsJSON` attribute of the `nixosOptionsDoc` function.
 So, for the previous examples, we would use `nix build -f ./file.nix optionsJSON`, that's the installable you have to pass
 to the loader.
 
