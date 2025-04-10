@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "easy-nix-documentation",
   description: "Documentation generator for your Nix projects",
-  base: "/easy-nix-documentation/",
+  // base: "/easy-nix-documentation/",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     // nav: [

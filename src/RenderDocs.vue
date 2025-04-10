@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { type OptionsDoc } from './loader';
+import type { RenderedNixosOption } from './loader';
 
 interface Props {
-    options: OptionsDoc,
+    options: Record<string, RenderedNixosOption>,
     headingLevel?: "h2" | "h3" | "h4" | undefined,
     include?: RegExp | RegExp[] | undefined,
     exclude?: RegExp | RegExp[] | undefined,
@@ -11,7 +11,7 @@ interface Props {
 const props = defineProps<Props>();
 const headingLevel = props.headingLevel || "h3";
 
-const optionsFiltered: OptionsDoc = Object.fromEntries( Object.entries(props.options).filter(([name, _]) => {
+const optionsFiltered: Record<string, RenderedNixosOption> = Object.fromEntries( Object.entries(props.options).filter(([name, _]) => {
     if (props.exclude !== undefined) {
         if (Array.isArray(props.exclude)) {
             return !props.exclude.some((exclude) => exclude.test(name));
@@ -44,23 +44,31 @@ const optionsFiltered: OptionsDoc = Object.fromEntries( Object.entries(props.opt
             <div v-html="option.description"></div>
 
             <div class="nixos-props">
-                <span>Type:</span>
-                <div class="nixos-value">
-                    <code>{{ option.type }}</code>
+                <div>
+                    <span class="nixos-btn">Type</span>
                 </div>
+                <div class="nixos-value" v-html="option.type" />
+                    <!-- <code>{{ option.type }}</code> -->
+                <!-- </div> -->
 
                 <template v-if="option.default">
-                    <span>Default:</span>
-                    <div class="nixos-value" v-html="option.default.text"></div>
+                    <div>
+                        <span class="nixos-btn">Default</span>
+                    </div>
+                    <div class="nixos-value" v-html="option.default"></div>
                 </template>
 
                 <template v-if="option.example">
-                    <span>Example:</span>
-                    <div class="nixos-value" v-html="option.example.text"></div>
+                    <div>
+                        <span class="nixos-btn">Example</span>
+                    </div>
+                    <div class="nixos-value" v-html="option.example"></div>
                 </template>
 
                 <template v-if="option.declarations.length >= 1">
-                    <span>Declaration</span>
+                    <div>
+                        <span class="nixos-btn">Declaration</span>
+                    </div>
                     <template v-for="declaration of option.declarations">
                         <div class="nixos-declaration" v-html="declaration"></div>
                     </template>
@@ -73,8 +81,9 @@ const optionsFiltered: OptionsDoc = Object.fromEntries( Object.entries(props.opt
 <style>
 .nixos-props {
     display: grid;
-    grid-template-columns: max-content 1fr;
-    gap: 2px 20px;
+    grid-template-columns: max-content auto;
+    gap: 4px 20px;
+    align-items: center;
 }
 
 .nixos-value {
@@ -82,17 +91,22 @@ const optionsFiltered: OptionsDoc = Object.fromEntries( Object.entries(props.opt
     overflow-x: auto;
 }
 
-.nixos-value > * {
-    margin: 0 !important;
-    display: inline-block;
-}
-
-.nixos-props code {
-    white-space: nowrap;
-}
-
-.nixos-props span {
+.nixos-btn {
+    background-color: var(--vp-c-bg-soft);
+    color: var(--vp-c-brand-1);
+    font-size: .8rem;
+    padding: .4rem .5rem;
     font-weight: 600;
+    border-radius: .4rem;
+}
+
+.nixos-declaration {
+    margin: .5rem 0;
+    overflow-wrap: anywhere;
+}
+
+.nixos-value > div {
+    margin: 0 !important;
 }
 
 .nixos-container {
@@ -101,11 +115,11 @@ const optionsFiltered: OptionsDoc = Object.fromEntries( Object.entries(props.opt
     gap: 30px;
 }
 
-.nixos-declaration {
-    word-break: break-all;
+.nixos-value .lang {
+    display: none;
 }
 
-.nixos-container pre {
-    margin: 0;
+.nixos-value .language-plaintext .copy {
+    display: none;
 }
 </style>
