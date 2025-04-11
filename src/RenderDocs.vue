@@ -122,4 +122,22 @@ const optionsFiltered: Record<string, RenderedNixosOption> = Object.fromEntries(
 .nixos-value .language-plaintext .copy {
     display: none;
 }
+
+.nixos-value .copy {
+    width: 20px !important;
+    height: 20px !important;
+    background-size: 10px !important;
+}
+
+.nixos-value .copy::before {
+    height: 20px !important;
+}
+
+.nixos-value .shiki {
+    padding: 10px 0 !important;
+}
+
+.nixos-value code {
+    padding: 0 10px !important;
+}
 </style>
